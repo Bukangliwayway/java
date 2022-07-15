@@ -1,15 +1,19 @@
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
 
 public class case2 extends Applet implements ActionListener {
+	JFormattedTextField firstVal, secondVal, result;
+	DecimalFormat nf = new DecimalFormat("##.###");
+	String res = "0";
+
 	public void init(){
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
-		JFormattedTextField firstVal, secondVal, result;
 		Button operator[] = new Button[5];
 		Button process[] = new Button[3];
 		String op = "+-*/=";
@@ -31,10 +35,14 @@ public class case2 extends Applet implements ActionListener {
 		firstVal.setHorizontalAlignment(JFormattedTextField.CENTER);
 		secondVal.setHorizontalAlignment(JFormattedTextField.CENTER);
 		result.setHorizontalAlignment(JFormattedTextField.CENTER);
-
+		//Action Listener
 		firstVal.addActionListener(this);
 		secondVal.addActionListener(this);
 		result.addActionListener(this);
+		//Set to 0
+		firstVal.setText("0");
+		secondVal.setText("0");
+		result.setText("0");
 		//OperatorButtons
 		for(int i = 0; i < operator.length; i++){
 			operator[i] = new Button(Character.toString(op.charAt(i)));
@@ -57,16 +65,25 @@ public class case2 extends Applet implements ActionListener {
 	public void actionPerformed(ActionEvent e){
 		String clicked = e.getActionCommand();
 		switch(clicked.charAt(0)){
-			case '+': break;
-			case '-': break;
-			case '/': break;
-			case '*': break;
-			case '=': break;
-			case 'C': break;
-			case 'O': break;
-			default: break;
+			case '+':
+				res = nf.format(Double.parseDouble(firstVal.getText()) + Double.parseDouble(secondVal.getText()));
+			break;
+			case '-':
+				res = nf.format(Double.parseDouble(firstVal.getText()) + Double.parseDouble(secondVal.getText()));
+			break;
+			case '/':
+			break;
+			case '*': 
+			break;
+			case '=': 
+				result.setText(res);
+			break;
+			case 'C': 
+			break;
+			case 'O': 
+			break;
 		}
-		System.out.println(clicked);
+		// System.out.println(clicked + " | " + res);
 	}
 
 // 	public void paint(Graphics g){
