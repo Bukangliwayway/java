@@ -9,13 +9,13 @@ import javax.swing.JFormattedTextField;
 public class case2 extends Applet implements ActionListener {
 	JFormattedTextField firstVal, secondVal, result;
 	DecimalFormat nf = new DecimalFormat("##.###");
+	Button process[] = new Button[2];
+	Button operator[] = new Button[5];
 	String res = "0";
 
 	public void init(){
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
-		Button operator[] = new Button[5];
-		Button process[] = new Button[3];
 		String op = "+-*/=";
 		//TextFields
 		firstVal = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -43,6 +43,11 @@ public class case2 extends Applet implements ActionListener {
 		firstVal.setText("0");
 		secondVal.setText("0");
 		result.setText("0");
+		//Disable Actions
+		firstVal.setEnabled(false);
+		secondVal.setEnabled(false);
+		result.setEnabled(false);
+
 		//OperatorButtons
 		for(int i = 0; i < operator.length; i++){
 			operator[i] = new Button(Character.toString(op.charAt(i)));
@@ -50,14 +55,15 @@ public class case2 extends Applet implements ActionListener {
 			if(i<4)operator[i].setBounds(200+(i*75),200, 75, 50);
 			else operator[i].setBounds(200,300,300,50);
 			operator[i].addActionListener(this);
+			operator[i].setEnabled(false);
 		}
 		//ProcessButtons
 		process[0] = new Button("CLEAR");
+		process[0].setEnabled(false);
 		process[1] = new Button("ON");
-		process[2] = new Button("OFF");
 		for(int i = 0; i<process.length; i++){
 			this.add(process[i]);
-			process[i].setBounds(200+(i*100),400,100,50);
+			process[i].setBounds(200+(i*150),400,150,50);
 			process[i].addActionListener(this);
 		}
 	}
@@ -69,24 +75,38 @@ public class case2 extends Applet implements ActionListener {
 				res = nf.format(Double.parseDouble(firstVal.getText()) + Double.parseDouble(secondVal.getText()));
 			break;
 			case '-':
-				res = nf.format(Double.parseDouble(firstVal.getText()) + Double.parseDouble(secondVal.getText()));
+				res = nf.format(Double.parseDouble(firstVal.getText()) - Double.parseDouble(secondVal.getText()));
 			break;
-			case '/':
+				case '/':
+				res = nf.format(Double.parseDouble(firstVal.getText()) / Double.parseDouble(secondVal.getText()));
 			break;
-			case '*': 
+				case '*': 
+				res = nf.format(Double.parseDouble(firstVal.getText()) * Double.parseDouble(secondVal.getText()));
 			break;
 			case '=': 
 				result.setText(res);
 			break;
 			case 'C': 
+				res = "0";
+				firstVal.setText(res);
+				secondVal.setText(res);
+				result.setText(res);
 			break;
-			case 'O': 
-			break;
+			case 'O':
+				if(process[1].getLabel().equalsIgnoreCase("ON"))process[1].setLabel("OFF");				
+				else process[1].setLabel("ON");
+				process[0].setEnabled(process[1].getLabel().equalsIgnoreCase("OFF"));
+				for(int i = 0; i < operator.length; i++) operator[i].setEnabled(process[1].getLabel().equalsIgnoreCase("OFF"));
+				firstVal.setEnabled(process[1].getLabel().equalsIgnoreCase("OFF"));
+				secondVal.setEnabled(process[1].getLabel().equalsIgnoreCase("OFF"));
+				result.setEnabled(process[1].getLabel().equalsIgnoreCase("OFF"));
+				if(process[1].getLabel().equalsIgnoreCase("OFF")){
+					res = "0";
+					firstVal.setText(res);
+					secondVal.setText(res);
+					result.setText(res);
+				}
 		}
-		// System.out.println(clicked + " | " + res);
 	}
-
-// 	public void paint(Graphics g){
-// 	}
 }
 
